@@ -92,7 +92,10 @@ contract NFTAuction is Ownable {
         //走到这里说明了  竞拍成功
         //如果之前有最高价  那么把钱   退还   给之前的最高价出价者
         if (a.highestBid > 0) {
-            payable(a.highestBidder).transfer(a.highestBid);
+            // payable(a.highestBidder).transfer(a.highestBid);
+            //更安全的写法
+            (bool success,)=payable(a.highestBidder).call{value: a.highestBid}("");
+            require(success, "Failed to refund previous highest bidder");
         }
             a.highestBid = msg.value;
             a.highestBidder = msg.sender;
