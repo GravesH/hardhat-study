@@ -1,5 +1,7 @@
 const { ethers } = require("hardhat");
 async function main() {
+  let metaURL =
+    "https://gateway.pinata.cloud/ipfs/bafkreiezc4xrv4dyhpfesrvpxkcxsazsrez6biiyf4juhswljqzrmcyi44";
   const [deployer] = await hre.ethers.getSigners();
   console.log("部署账户:", deployer.address);
   const MyNFT = await ethers.getContractFactory("myNFT");
@@ -9,7 +11,7 @@ async function main() {
   console.log("myNFT deployed to:", await myNFT.getAddress());
 
   // 直接 mint 给你自己
-  const tx = await myNFT.safeMint(deployer.address);
+  const tx = await myNFT.safeMint(deployer.address, metaURL);
   await tx.wait();
   console.log("成功 mint 给:", deployer.address);
 }
